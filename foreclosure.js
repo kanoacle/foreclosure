@@ -1,11 +1,8 @@
 'use strict';
 
 var steve;
-
 var stevesLoan;
-
 var month = 0;
-
 var monthsUntilEvicted;
 
 function loan () {
@@ -35,7 +32,7 @@ function loan () {
       return account.balance;
     },
 
-    recievePayment : function (amount) {
+    receivePayment : function (amount) {
       if (amount < account.monthlyPayment) {
         missPayment();
       }
@@ -67,7 +64,30 @@ function borrower (loan) {
     },
 
     makePayment : function () {
+      if (account.funds > loan.getMonthlyPayment()) {
+        account.funds -= loan.getMonthlyPayment();
+        loan.receivePayment(loan.getMonthlyPayment());
+      }
+      else {
+        loan.receivePayment(account.funds);
+        account.funds = 0;
+      }
+    },
 
+    payDay : function () {
+      account.funds += account.monthlyIncome;
     }
   };
+}
+
+stevesLoan = loan ();
+steve = borrower (stevesLoan);
+while (stevesLoan.isForeclosed() === false) {
+  debugger;
+  steve.payDay();
+  steve.makePayment();
+  month++;
+}
+if (stevesLoan.getBalance() > 0) {
+  monthsUntilEvicted = month;
 }
