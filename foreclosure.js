@@ -83,7 +83,6 @@ function borrower (loan) {
 stevesLoan = loan ();
 steve = borrower (stevesLoan);
 while (stevesLoan.isForeclosed() === false) {
-  debugger;
   steve.payDay();
   steve.makePayment();
   month++;
